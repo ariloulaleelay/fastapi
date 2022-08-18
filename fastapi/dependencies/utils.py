@@ -692,13 +692,10 @@ async def run_plan(
     request: Union[Request, WebSocket],
     body: Optional[Union[Dict[str, Any], FormData]] = None,
 ) -> Any:
-    response = Response(
-        content=None,
-        status_code=None,  # type: ignore
-        headers=None,  # type: ignore # in Starlette
-        media_type=None,  # type: ignore # in Starlette
-        background=None,  # type: ignore # in Starlette
-    )
+    response = Response()
+    del response.headers["content-length"]
+    response.status_code = None  # type: ignore
+
     background_tasks = None
     errors = []
     nodes = [node.copy() for node in plan.nodes]

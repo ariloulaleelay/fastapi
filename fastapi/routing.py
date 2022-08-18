@@ -241,6 +241,8 @@ def get_request_handler(
         if status_code is not None:
             response_args["status_code"] = status_code
         response = actual_response_class(response_data, **response_args)
+        if not is_body_allowed_for_status_code(status_code):
+            response.body = b""
         response.headers.raw.extend(sub_response.headers.raw)
         if sub_response.status_code:
             response.status_code = sub_response.status_code
